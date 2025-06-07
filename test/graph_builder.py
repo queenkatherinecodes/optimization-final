@@ -4,23 +4,30 @@ import scipy as sp
 import random
 
 
-def setup_toy_matrix(size=100, weight_mu= 5.0, weight_sigma = 5.0, p = .5):
+def setup_toy_matrix(size=100, min_weight=1.0, max_weight=10.0, p=.3):
     G = nx.erdos_renyi_graph(size, p)
     for (u, v) in G.edges():
-        G[u][v]['weight'] = random.gauss(weight_mu, weight_sigma)
+        G[u][v]['weight'] = random.uniform(min_weight, max_weight)
     return G
 
+def setup_reachability_graph(G, t=2.0):
+    distances = nx.floyd_warshall(G, weight='weight')
+    reachability_graph = nx.Graph()
+    reachability_graph.add_nodes_from(G.nodes())
+    
+    nodes = list(G.nodes())
+    for i, u in enumerate(nodes):
+        for j, v in enumerate(nodes):
+            if i < j:
+                try:
+                    if distances[u][v] <= t:
+                        reachability_graph.add_edge(u, v)
+                except KeyError:
+                    pass
+    return nx.to_numpy_array(reachability_graph)
 
 if __name__ == "__main__":
-    G = setup_toy_matrix(10)
+    G = setup_toy_matrix()
     print(G)
-    print("=== Adjacency List ===")
-    for node in G.adjacency():
-        print(node)
-
-    print("=== Degree View ===")
-    print(dict(G.degree()))
-
-    print("=== Edges with Weights ===")
-    for u, v, data in G.edges(data=True):
-        print(f"({u}, {v}): {data}")
+    RG = setup_reachability_graph(G)
+    print(RG)
