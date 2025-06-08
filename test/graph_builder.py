@@ -24,7 +24,8 @@ def setup_reachability_graph(G, t=2.0):
                         reachability_graph.add_edge(u, v)
                 except KeyError:
                     pass
-    return nx.to_numpy_array(reachability_graph)
+    # return nx.to_scipy_sparse_matrix(reachability_graph, format = 'coo')
+    return nx.to_scipy_sparse_matrix(reachability_graph, format='csr') #Good for "squeezing" a row to only it's 1 indices
 
 if __name__ == "__main__":
     G = setup_toy_matrix()
