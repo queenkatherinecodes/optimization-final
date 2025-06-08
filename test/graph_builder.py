@@ -7,11 +7,11 @@ import random
 def setup_toy_matrix(size=100, min_weight=1.0, max_weight=10.0, p=.3):
     G = nx.erdos_renyi_graph(size, p)
     for (u, v) in G.edges():
-        G[u][v]['weight'] = random.uniform(min_weight, max_weight)
+        G[u][v]['length'] = random.uniform(min_weight, max_weight)
     return G
 
 def setup_reachability_graph(G, t=2.0):
-    distances = nx.floyd_warshall(G, weight='weight')
+    distances = nx.all_pairs_dijkstra_path_length(G, weight='length')
     reachability_graph = nx.Graph()
     reachability_graph.add_nodes_from(G.nodes())
     
