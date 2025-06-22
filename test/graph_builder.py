@@ -10,8 +10,8 @@ def setup_toy_matrix(size=100, min_weight=1.0, max_weight=10.0, p=.3):
         G[u][v]['length'] = random.uniform(min_weight, max_weight)
     return G
 
-def setup_reachability_graph(G, t=2.0):
-    distances = dict(nx.all_pairs_dijkstra_path_length(G, weight='length'))
+def setup_reachability_graph(G, shortest_path_dict, t=2.0):
+    distances = shortest_path_dict
     reachability_graph = nx.Graph()
     reachability_graph.add_nodes_from(G.nodes())
     
