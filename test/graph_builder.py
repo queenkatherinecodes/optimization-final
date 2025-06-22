@@ -11,7 +11,7 @@ def setup_toy_matrix(size=100, min_weight=1.0, max_weight=10.0, p=.3):
     return G
 
 def setup_reachability_graph(G, t=2.0):
-    distances = nx.all_pairs_dijkstra_path_length(G, weight='length')
+    distances = dict(nx.all_pairs_dijkstra_path_length(G, weight='length'))
     reachability_graph = nx.Graph()
     reachability_graph.add_nodes_from(G.nodes())
     
